@@ -1,169 +1,121 @@
 import { motion } from "framer-motion";
-import { Shield, Lock, Globe, Zap, ArrowLeft, ArrowRight } from "lucide-react";
+import { ArrowLeft, ArrowRight, CheckCircle2, ShieldCheck, Sparkles } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 import { useLanguage } from "@/contexts/LanguageContext";
 
-const floatingIcons = [
-  { icon: Shield, x: "8%", y: "18%", delay: 0, size: "w-7 h-7" },
-  { icon: Lock, x: "88%", y: "25%", delay: 0.8, size: "w-5 h-5" },
-  { icon: Globe, x: "78%", y: "72%", delay: 1.6, size: "w-6 h-6" },
-  { icon: Zap, x: "15%", y: "75%", delay: 2.4, size: "w-5 h-5" },
-];
-
-const particles = Array.from({ length: 20 }, (_, i) => ({
-  x: `${Math.random() * 100}%`,
-  y: `${Math.random() * 100}%`,
-  size: Math.random() * 3 + 1,
-  delay: Math.random() * 5,
-  duration: Math.random() * 4 + 6,
-}));
-
 const HeroSection = () => {
-  const { t, dir } = useLanguage();
+  const { dir, lang } = useLanguage();
   const Arrow = dir === "rtl" ? ArrowLeft : ArrowRight;
 
-  const stats = [
-    { value: t("hero.stat1.value"), label: t("hero.stat1.label") },
-    { value: t("hero.stat2.value"), label: t("hero.stat2.label") },
-    { value: t("hero.stat3.value"), label: t("hero.stat3.label") },
-  ];
+  const slogan =
+    lang === "ar"
+      ? "نحن ملتزمون بالحفاظ على منشآتكم بأفضل حال"
+      : "We are committed to keeping your facilities in the best condition";
+
+  const subSlogan =
+    lang === "ar"
+      ? "نظام المصادقة المركزي — بوابة واحدة لجميع منصات وخدمات مجموعة العزب"
+      : "Central Authentication — one gateway to all Alazab Group platforms and services";
 
   return (
-    <section className="relative py-28 md:py-40 overflow-hidden">
-      {/* Multi-layer background */}
-      <div className="absolute inset-0 gradient-hero" />
-      <div className="absolute inset-0 pointer-events-none">
-        <div className="absolute top-0 left-1/3 w-[500px] h-[500px] rounded-full bg-primary/8 blur-[120px] animate-glow-pulse" />
-        <div className="absolute bottom-0 right-1/4 w-[600px] h-[600px] rounded-full bg-primary/5 blur-[150px]" />
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] rounded-full bg-accent/3 blur-[200px]" />
-      </div>
+    <section aria-labelledby="hero-title" className="relative min-h-[calc(100svh-72px)] w-full overflow-hidden flex items-center">
+      {/* Video background */}
+      <video
+        className="absolute inset-0 w-full h-full object-cover"
+        src="https://assets.mixkit.co/videos/preview/mixkit-modern-buildings-and-a-crane-at-a-construction-site-45478-large.mp4"
+        autoPlay
+        loop
+        muted
+        playsInline
+        poster="https://images.unsplash.com/photo-1541888946425-d81bb19240f5?auto=format&fit=crop&w=1920&q=80"
+      />
 
-      {/* Grid overlay */}
-      <div className="absolute inset-0 opacity-[0.03]" style={{
-        backgroundImage: 'linear-gradient(rgba(255,255,255,0.4) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.4) 1px, transparent 1px)',
-        backgroundSize: '60px 60px'
-      }} />
+      {/* Dark overlay */}
+      <div className="absolute inset-0 bg-gradient-to-b from-[#02063f]/90 via-[#030957]/78 to-[#02053f]/95" />
+      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_50%_35%,transparent_0%,#030957_88%)] opacity-70" />
+      <div className="absolute inset-0 bg-grid-pattern opacity-[0.08]" />
 
-      {/* Particles */}
-      {particles.map((p, i) => (
+      {/* Content */}
+      <div className="container relative flex flex-col items-center justify-center text-center px-4 py-20 md:py-28">
         <motion.div
-          key={i}
-          className="absolute rounded-full bg-primary/30 pointer-events-none"
-          style={{ left: p.x, top: p.y, width: p.size, height: p.size }}
-          animate={{
-            y: [0, -30, -15, -40, 0],
-            opacity: [0.2, 0.6, 0.3, 0.5, 0.2],
-          }}
-          transition={{ duration: p.duration, delay: p.delay, repeat: Infinity, ease: "easeInOut" }}
-        />
-      ))}
-
-      {/* Floating icons */}
-      {floatingIcons.map((item, i) => (
-        <motion.div
-          key={i}
-          className="absolute hidden md:flex items-center justify-center w-12 h-12 rounded-2xl bg-white/[0.04] backdrop-blur-md border border-white/[0.08] text-primary/50"
-          style={{ left: item.x, top: item.y }}
-          animate={{ y: [0, -14, 0], rotate: [0, 3, -2, 0] }}
-          transition={{ duration: 4, delay: item.delay, repeat: Infinity, ease: "easeInOut" }}
-        >
-          <item.icon className={item.size} />
-        </motion.div>
-      ))}
-
-      <div className="container relative text-center">
-        <motion.div
-          initial={{ opacity: 0, y: 40 }}
+          initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, ease: [0.25, 0.46, 0.45, 0.94] }}
-          className="flex flex-col items-center gap-6"
+          transition={{ delay: 0.2, duration: 0.6 }}
+          className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/10 backdrop-blur-md border border-white/15 text-white/90 text-xs md:text-sm font-medium mb-7"
         >
-          {/* Badge */}
-          <motion.div
-            initial={{ opacity: 0, scale: 0.8, y: 10 }}
-            animate={{ opacity: 1, scale: 1, y: 0 }}
-            transition={{ delay: 0.3, duration: 0.5 }}
-            className="inline-flex items-center gap-2.5 px-5 py-2.5 rounded-full bg-primary/10 border border-primary/20 backdrop-blur-sm text-primary text-sm font-medium"
-          >
-            <div className="relative flex items-center justify-center">
-              <Shield className="w-4 h-4 relative z-10" />
-              <div className="absolute inset-0 animate-pulse-ring rounded-full bg-primary/40" />
-            </div>
-            {t("hero.badge")}
-          </motion.div>
+          <ShieldCheck className="w-4 h-4 text-primary" />
+          {lang === "ar" ? "مجموعة العزب للمقاولات" : "Alazab Contracting Group"}
+        </motion.div>
 
-          {/* Main heading */}
-          <motion.h2
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.4, duration: 0.7 }}
-            className="font-heading font-extrabold text-4xl md:text-5xl lg:text-7xl text-white leading-[1.15] max-w-4xl"
-          >
-            {t("hero.title1")}{" "}
-            <span className="text-gradient">{t("hero.title2")}</span>
-            <br />
-            <span className="relative inline-block text-primary">
-              Alazab
-              <motion.div
-                className="absolute -bottom-2 left-0 right-0 h-1 rounded-full bg-primary/40"
-                initial={{ scaleX: 0 }}
-                animate={{ scaleX: 1 }}
-                transition={{ delay: 1.2, duration: 0.6 }}
-              />
-            </span>
-          </motion.h2>
+        <motion.h1
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.4, duration: 0.8 }}
+          id="hero-title"
+          className="font-heading font-extrabold text-white text-[2.35rem] sm:text-5xl md:text-6xl lg:text-[4.6rem] leading-[1.14] max-w-5xl text-balance drop-shadow-2xl"
+        >
+          {slogan}
+        </motion.h1>
 
-          {/* Subtitle */}
-          <motion.p
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.6 }}
-            className="text-white/50 text-lg md:text-xl max-w-xl leading-relaxed"
-          >
-            {t("hero.subtitle")}
-          </motion.p>
+        <motion.p
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.7, duration: 0.7 }}
+          className="mt-6 text-white/75 text-base md:text-xl max-w-2xl leading-relaxed text-balance"
+        >
+          {subSlogan}
+        </motion.p>
 
-          {/* CTA Buttons */}
-          <motion.div
-            initial={{ opacity: 0, y: 15 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.8 }}
-            className="flex flex-col sm:flex-row gap-4 mt-4"
+        <motion.div
+          initial={{ opacity: 0, y: 15 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 1, duration: 0.6 }}
+          className="mt-9 flex w-full sm:w-auto flex-col sm:flex-row gap-3"
+        >
+          <Button
+            size="lg"
+            className="h-14 w-full sm:w-auto px-9 text-base gap-2.5 bg-primary text-primary-foreground hover:bg-primary/90 font-bold rounded-xl shadow-2xl shadow-primary/30"
+            asChild
           >
-            <Button size="lg" className="h-13 px-10 text-base gap-2.5 shadow-lg glow-primary bg-primary text-primary-foreground hover:bg-primary/90 font-bold rounded-xl" asChild>
-              <Link to="/auth/login">
-                {t("hero.cta")}
-                <Arrow className="w-4 h-4" />
-              </Link>
-            </Button>
-            <Button variant="outline" size="lg" className="h-13 px-10 text-base border-white/15 text-white/80 hover:bg-white/10 hover:border-white/30 hover:text-white rounded-xl" asChild>
-              <Link to="/auth/login">{t("nav.login")}</Link>
-            </Button>
-          </motion.div>
+            <Link to="/auth/login">
+              {lang === "ar" ? "ابدأ الآن" : "Get Started"}
+              <Arrow className="w-4 h-4" />
+            </Link>
+          </Button>
+          <Button
+            variant="outline"
+            size="lg"
+            className="h-14 w-full sm:w-auto px-9 text-base border-white/20 bg-white/5 backdrop-blur-md text-white hover:bg-white/15 hover:border-white/40 rounded-xl"
+            asChild
+          >
+            <a href="#services">
+              {lang === "ar" ? "استكشف الخدمات" : "Explore Services"}
+            </a>
+          </Button>
+        </motion.div>
 
-          {/* Stats */}
-          <motion.div
-            initial={{ opacity: 0, y: 25 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 1 }}
-            className="flex items-center gap-10 md:gap-16 mt-12 pt-10 border-t border-white/[0.08]"
-          >
-            {stats.map((stat, i) => (
-              <motion.div
-                key={stat.label}
-                initial={{ opacity: 0, y: 10 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 1.1 + i * 0.15 }}
-                className="text-center"
-              >
-                <div className="font-heading font-extrabold text-3xl md:text-4xl text-primary">{stat.value}</div>
-                <div className="text-xs md:text-sm text-white/40 mt-1.5 font-medium">{stat.label}</div>
-              </motion.div>
-            ))}
-          </motion.div>
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 1.1, duration: 0.6 }}
+          className="mt-9 flex flex-wrap items-center justify-center gap-x-6 gap-y-3 text-xs md:text-sm text-white/65"
+        >
+          <span className="inline-flex items-center gap-2"><CheckCircle2 className="w-4 h-4 text-primary" />{lang === "ar" ? "دخول موحّد وآمن" : "Secure single sign-on"}</span>
+          <span className="inline-flex items-center gap-2"><CheckCircle2 className="w-4 h-4 text-primary" />{lang === "ar" ? "بدون كلمة مرور" : "Passwordless access"}</span>
+          <span className="inline-flex items-center gap-2"><Sparkles className="w-4 h-4 text-primary" />{lang === "ar" ? "دعم ذكي على مدار الساعة" : "24/7 smart support"}</span>
         </motion.div>
       </div>
+
+      {/* Scroll hint */}
+      <motion.div
+        animate={{ y: [0, 8, 0] }}
+        transition={{ duration: 1.8, repeat: Infinity }}
+        aria-hidden="true"
+        className="absolute bottom-5 left-1/2 -translate-x-1/2 w-6 h-10 rounded-full border-2 border-white/30 flex items-start justify-center p-1.5"
+      >
+        <div className="w-1 h-2 rounded-full bg-primary" />
+      </motion.div>
     </section>
   );
 };

@@ -21,6 +21,28 @@ interface Message {
   attachment?: Attachment;
 }
 
+interface SpeechRecognitionResultEvent {
+  results: ArrayLike<ArrayLike<{ transcript: string }>>;
+}
+
+interface SpeechRecognitionInstance {
+  lang: string;
+  interimResults: boolean;
+  maxAlternatives: number;
+  onresult: ((event: SpeechRecognitionResultEvent) => void) | null;
+  onerror: (() => void) | null;
+  onend: (() => void) | null;
+  start: () => void;
+  stop: () => void;
+}
+
+type SpeechRecognitionConstructor = new () => SpeechRecognitionInstance;
+
+interface WindowWithSpeechRecognition extends Window {
+  SpeechRecognition?: SpeechRecognitionConstructor;
+  webkitSpeechRecognition?: SpeechRecognitionConstructor;
+}
+
 const SERVICE_LINKS = [
   { key: "azabot.serviceMain", url: "https://alazab.com", emoji: "🏢" },
   { key: "azabot.serviceUber", url: "https://uberfix.shop", emoji: "🔧" },
@@ -48,7 +70,7 @@ const AzaBotChat = () => {
   const [cameraOpen, setCameraOpen] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const audioRef = useRef<HTMLAudioElement | null>(null);
-  const recognitionRef = useRef<any>(null);
+  const recognitionRef = useRef<SpeechRecognitionInstance | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
   const streamRef = useRef<MediaStream | null>(null);
@@ -65,7 +87,11 @@ const AzaBotChat = () => {
   }, [messages]);
 
   useEffect(() => {
-    try { localStorage.setItem(STORAGE_KEY, JSON.stringify(messages)); } catch {}
+    try {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(messages));
+    } catch {
+      // Chat history is optional when storage is unavailable or full.
+    }
   }, [messages]);
 
   const sendMessage = useCallback(async (text: string, attachment?: Attachment) => {
@@ -150,13 +176,14 @@ const AzaBotChat = () => {
 
   const toggleListening = () => {
     if (isListening) { recognitionRef.current?.stop(); setIsListening(false); return; }
-    const SpeechRecognition = (window as any).SpeechRecognition || (window as any).webkitSpeechRecognition;
+    const speechWindow = window as WindowWithSpeechRecognition;
+    const SpeechRecognition = speechWindow.SpeechRecognition || speechWindow.webkitSpeechRecognition;
     if (!SpeechRecognition) { alert(t("azabot.noSpeech")); return; }
     const recognition = new SpeechRecognition();
     recognition.lang = lang === "ar" ? "ar-SA" : "en-US";
     recognition.interimResults = false;
     recognition.maxAlternatives = 1;
-    recognition.onresult = (event: any) => {
+    recognition.onresult = (event: SpeechRecognitionResultEvent) => {
       const transcript = event.results[0][0].transcript;
       setIsListening(false);
       sendMessage(transcript);

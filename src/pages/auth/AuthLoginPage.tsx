@@ -10,8 +10,6 @@ import { useLanguage } from "@/contexts/LanguageContext";
 import { supabase } from "@/integrations/supabase/client";
 import { lovable } from "@/integrations/lovable/index";
 import { toast } from "sonner";
-import logoDark from "@/assets/az-s.png.asset.json";
-import logoLight from "@/assets/az-w.png.asset.json";
 
 const particles = Array.from({ length: 12 }, (_, i) => ({
   x: `${Math.random() * 100}%`,
@@ -32,6 +30,9 @@ const WhatsAppIcon = () => (
     <path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448L.057 24zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981z"/>
   </svg>
 );
+
+const getErrorMessage = (error: unknown, fallback: string) =>
+  error instanceof Error ? error.message : fallback;
 
 const AuthLoginPage = () => {
   const { t, dir } = useLanguage();
@@ -55,8 +56,8 @@ const AuthLoginPage = () => {
         },
       });
       if (error) throw error;
-    } catch (err: any) {
-      toast.error(err.message || "Azure login failed");
+    } catch (err: unknown) {
+      toast.error(getErrorMessage(err, "Azure login failed"));
       setAzureLoading(false);
     }
   };
@@ -72,8 +73,8 @@ const AuthLoginPage = () => {
       });
       if (error) throw error;
       navigate(`/auth/check-email?email=${encodeURIComponent(email)}`);
-    } catch (err: any) {
-      toast.error(err.message || "Error sending OTP");
+    } catch (err: unknown) {
+      toast.error(getErrorMessage(err, "Error sending OTP"));
     } finally {
       setLoading(false);
     }
@@ -90,8 +91,8 @@ const AuthLoginPage = () => {
       });
       if (error) throw error;
       navigate(`/auth/verify?phone=${encodeURIComponent(phone)}`);
-    } catch (err: any) {
-      toast.error(err.message || "Error sending SMS");
+    } catch (err: unknown) {
+      toast.error(getErrorMessage(err, "Error sending SMS"));
     } finally {
       setPhoneLoading(false);
     }
@@ -156,7 +157,7 @@ const AuthLoginPage = () => {
           >
             <div className="absolute inset-0 rounded-[2rem] bg-primary/20 blur-2xl animate-glow-pulse" />
             <div className="relative w-full h-full rounded-[2rem] bg-white/[0.06] backdrop-blur-md border border-white/[0.12] shadow-2xl flex items-center justify-center p-5">
-              <img src={logoLight.url} alt="Alazab" className="w-full h-full object-contain drop-shadow-2xl" />
+              <img src="/brands/android-chrome-512x512.png" alt="Alazab" className="w-full h-full rounded-3xl object-contain drop-shadow-2xl" />
             </div>
           </motion.div>
           <h2 className="font-heading text-4xl font-extrabold mb-5 leading-tight">{t("otp.login.title")}</h2>
@@ -200,8 +201,7 @@ const AuthLoginPage = () => {
                 className="relative w-20 h-20 mx-auto mb-5"
               >
                 <div className="absolute inset-0 rounded-2xl bg-primary/10 blur-xl" />
-                <img src={logoDark.url} alt="Alazab" className="relative w-20 h-20 object-contain dark:hidden drop-shadow-md" />
-                <img src={logoLight.url} alt="Alazab" className="relative w-20 h-20 object-contain hidden dark:block drop-shadow-md" />
+                <img src="/brands/android-chrome-192x192.png" alt="Alazab" className="relative w-20 h-20 rounded-2xl object-contain drop-shadow-md" />
               </motion.div>
               <h1 className="font-heading text-2xl font-extrabold text-foreground">{t("otp.login.title")}</h1>
               <p className="text-muted-foreground text-sm mt-2">{t("otp.login.subtitle")}</p>

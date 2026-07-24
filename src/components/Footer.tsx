@@ -1,97 +1,178 @@
-import { motion } from "framer-motion";
-import { Mail, Phone, MapPin, ArrowUp, ExternalLink } from "lucide-react";
+import { Link } from "react-router-dom";
+import { Mail, Phone, Globe, ExternalLink } from "lucide-react";
 import { useLanguage } from "@/contexts/LanguageContext";
-import logoLight from "@/assets/az-w.png.asset.json";
 
 const Footer = () => {
-  const { t } = useLanguage();
-  const scrollToTop = () => window.scrollTo({ top: 0, behavior: "smooth" });
+  const year = new Date().getFullYear();
+  const { lang } = useLanguage();
+
+  const quickLinks = [
+    { to: "/", label: "الرئيسية" },
+    { to: "/about", label: "من نحن" },
+    { to: "/services", label: "خدماتنا" },
+    { to: "/projects", label: "مشاريعنا" },
+    { to: "/brands", label: "علاماتنا التجارية" },
+    { to: "/knowledge", label: "قاعدة المعرفة" },
+    { to: "/blogs", label: "المدونة" },
+    { to: "/guidance", label: "الأدلة العملية" },
+    { to: "/faq", label: "الأسئلة الشائعة" },
+    { to: "/contact", label: "اتصل بنا" },
+  ];
+
+  const services = [
+    { to: "/services/luxury-finishing", label: "التشطيب الراقي" },
+    { to: "/services/brand-identity", label: "هوية العلامة التجارية" },
+    { to: "/services/uberfix", label: "أوبرفيكس - الصيانة المعمارية" },
+    { to: "/services/laban-alasfour", label: "لبن العصفور - التوريدات" },
+  ];
+
+  const branches = [
+    { title: "المقر الرئيسي - القاهرة", address: "مصر، القاهرة، المعادي", phone: "+201004006620" },
+    { title: "فرع الدقهلية - نبروه", address: "مصر، الدقهلية، مدينة نبروه", phone: "+201014536600" },
+    { title: "فرع الإسكندرية", address: "مصر، الإسكندرية، سموحة", phone: "+201004006620" },
+  ];
+
+  const legal = [
+    { to: "/privacy-policy", label: "سياسة الخصوصية" },
+    { to: "/terms-of-service", label: "الشروط والأحكام" },
+    { to: "/cookie-policy", label: "سياسة الكوكيز" },
+    { to: "/data-deletion", label: "حذف البيانات" },
+    { to: "/refund-policy", label: "الاسترداد والإلغاء" },
+    { to: "/acceptable-use", label: "الاستخدام المقبول" },
+    { to: "/disclaimer", label: "إخلاء المسؤولية" },
+    { to: "/security", label: "الأمان" },
+    { to: "/legal-contact", label: "الاتصال القانوني" },
+  ];
 
   return (
-    <footer id="contact" className="relative bg-accent text-white pt-20 pb-8 overflow-hidden">
-      <div className="absolute inset-0 pointer-events-none">
-        <div className="absolute -top-40 right-1/4 w-[500px] h-[500px] rounded-full bg-primary/5 blur-[150px]" />
-        <div className="absolute -bottom-20 left-1/3 w-[400px] h-[400px] rounded-full bg-primary/3 blur-[120px]" />
-      </div>
-
-      <div className="container relative">
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
-          className="grid grid-cols-1 md:grid-cols-4 gap-12 mb-16"
-        >
-          {/* Brand */}
+    <footer id="contact" className="bg-gradient-to-b from-[#030957] to-[#01043a] text-white py-16">
+      <div className="container mx-auto px-4">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10">
+          {/* Company Info */}
           <div>
-            <div className="flex items-center gap-3 mb-6">
-              <img src={logoLight.url} alt="Alazab" className="w-14 h-14 object-contain drop-shadow-lg" />
+            <div className="mb-6 flex items-center gap-3">
+              <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-white">
+                <img src="/brands/android-chrome-192x192.png" alt="" className="h-10 w-10 rounded-lg object-contain" />
+              </div>
               <div>
-                <h3 className="font-heading font-bold text-xl text-white">العزب</h3>
-                <p className="text-xs text-white/40">{t("nav.subtitle")}</p>
+                <h3 className="text-lg font-bold text-white">{lang === "ar" ? "العزب" : "Alazab"}</h3>
+                <p className="text-xs text-white/60">{lang === "ar" ? "للمقاولات المتكاملة" : "Integrated Contracting"}</p>
               </div>
             </div>
-            <p className="text-sm text-white/40 leading-relaxed">{t("footer.desc")}</p>
+            <p className="text-white/70 mb-4 leading-relaxed text-sm">
+              شركة رائدة في مجال المقاولات والإنشاءات، نقدم خدمات متكاملة بأعلى معايير الجودة والاحترافية.
+            </p>
+            <div className="flex gap-6 text-sm">
+              <div className="text-center">
+                <div className="text-xl font-bold text-primary">20+</div>
+                <div className="text-xs text-white/60">سنة خبرة</div>
+              </div>
+              <div className="text-center">
+                <div className="text-xl font-bold text-primary">500+</div>
+                <div className="text-xs text-white/60">مشروع</div>
+              </div>
+              <div className="text-center">
+                <div className="text-xl font-bold text-primary">100+</div>
+                <div className="text-xs text-white/60">عميل</div>
+              </div>
+            </div>
+          </div>
+
+          {/* Quick Links */}
+          <div>
+            <h3 className="text-lg font-bold mb-5 text-white border-b border-primary/30 pb-2">روابط سريعة</h3>
+            <ul className="space-y-3">
+              {quickLinks.map((link) => (
+                <li key={link.to}>
+                  <Link
+                    to={link.to}
+                    className="text-white/70 hover:text-primary transition-colors duration-300 text-sm flex items-center gap-2"
+                  >
+                    <span className="text-primary">←</span>
+                    {link.label}
+                  </Link>
+                </li>
+              ))}
+              <li>
+                <a
+                  href="https://erp.alazab.com/apps"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-white/70 hover:text-primary transition-colors duration-300 text-sm flex items-center gap-2"
+                >
+                  <span className="text-primary">←</span>
+                  نظام ERP الإداري
+                  <ExternalLink className="w-3 h-3 opacity-60" />
+                </a>
+              </li>
+            </ul>
           </div>
 
           {/* Services */}
           <div>
-            <h4 className="font-heading font-bold mb-6 text-primary text-lg">{t("footer.services")}</h4>
-            <ul className="space-y-3.5 text-sm">
-              <li><a href="#" className="text-white/40 hover:text-primary transition-colors duration-300 flex items-center gap-2 group"><ExternalLink className="w-3 h-3 opacity-0 group-hover:opacity-100 transition-opacity" />{t("footer.services.1")}</a></li>
-              <li><a href="#" className="text-white/40 hover:text-primary transition-colors duration-300 flex items-center gap-2 group"><ExternalLink className="w-3 h-3 opacity-0 group-hover:opacity-100 transition-opacity" />{t("footer.services.2")}</a></li>
-              <li><a href="#" className="text-white/40 hover:text-primary transition-colors duration-300 flex items-center gap-2 group"><ExternalLink className="w-3 h-3 opacity-0 group-hover:opacity-100 transition-opacity" />{t("footer.services.3")}</a></li>
-              <li><a href="#" className="text-white/40 hover:text-primary transition-colors duration-300 flex items-center gap-2 group"><ExternalLink className="w-3 h-3 opacity-0 group-hover:opacity-100 transition-opacity" />{t("footer.services.4")}</a></li>
+            <h3 className="text-lg font-bold mb-5 text-white border-b border-primary/30 pb-2">خدماتنا</h3>
+            <ul className="space-y-3 text-white/70 text-sm">
+              {services.map((service) => (
+                <li key={service.to}>
+                  <Link to={service.to} className="flex items-center gap-2 hover:text-primary transition-colors">
+                    <span className="w-1.5 h-1.5 bg-primary rounded-full shrink-0" />
+                    {service.label}
+                  </Link>
+                </li>
+              ))}
             </ul>
           </div>
 
-          {/* Support */}
+          {/* Contact Info */}
           <div>
-            <h4 className="font-heading font-bold mb-6 text-primary text-lg">{t("footer.support")}</h4>
-            <ul className="space-y-3.5 text-sm">
-              <li><a href="#" className="text-white/40 hover:text-primary transition-colors duration-300">{t("footer.support.1")}</a></li>
-              <li><a href="#" className="text-white/40 hover:text-primary transition-colors duration-300">{t("footer.support.2")}</a></li>
-              <li><a href="#" className="text-white/40 hover:text-primary transition-colors duration-300">{t("footer.support.3")}</a></li>
-              <li><a href="#" className="text-white/40 hover:text-primary transition-colors duration-300">{t("footer.support.4")}</a></li>
-            </ul>
-          </div>
-
-          {/* Contact */}
-          <div>
-            <h4 className="font-heading font-bold mb-6 text-primary text-lg">{t("footer.contact")}</h4>
+            <h3 className="text-lg font-bold mb-5 text-white border-b border-primary/30 pb-2">معلومات الاتصال</h3>
             <div className="space-y-4 text-sm">
-              <a href="tel:+966123456789" className="flex items-center gap-3 text-white/40 hover:text-primary transition-colors duration-300 group">
-                <div className="w-10 h-10 rounded-xl bg-white/[0.05] border border-white/[0.08] flex items-center justify-center flex-shrink-0 group-hover:border-primary/30 transition-colors">
-                  <Phone className="w-4 h-4 text-primary" />
+              {branches.map((branch) => (
+                <div key={branch.title} className="bg-white/5 rounded-lg p-3">
+                  <p className="font-medium text-white text-xs mb-1">{branch.title}</p>
+                  <p className="text-white/60 text-xs">{branch.address}</p>
+                  <p className="text-primary text-xs mt-1" dir="ltr">{branch.phone}</p>
                 </div>
-                <span dir="ltr">+966 12 345 6789</span>
-              </a>
-              <a href="mailto:info@alazab.com" className="flex items-center gap-3 text-white/40 hover:text-primary transition-colors duration-300 group">
-                <div className="w-10 h-10 rounded-xl bg-white/[0.05] border border-white/[0.08] flex items-center justify-center flex-shrink-0 group-hover:border-primary/30 transition-colors">
-                  <Mail className="w-4 h-4 text-primary" />
-                </div>
-                <span>info@alazab.com</span>
-              </a>
-              <div className="flex items-center gap-3 text-white/40">
-                <div className="w-10 h-10 rounded-xl bg-white/[0.05] border border-white/[0.08] flex items-center justify-center flex-shrink-0">
-                  <MapPin className="w-4 h-4 text-primary" />
-                </div>
-                <span>{t("footer.location")}</span>
+              ))}
+
+              <div className="pt-2 space-y-2">
+                <a href="mailto:support@al-azab.co" className="text-white/70 hover:text-primary transition-colors flex items-center gap-2 text-xs">
+                  <Mail className="w-3.5 h-3.5" />
+                  support@al-azab.co
+                </a>
+                <a href="https://al-azab.co" target="_blank" rel="noopener noreferrer" className="text-white/70 hover:text-primary transition-colors flex items-center gap-2 text-xs">
+                  <Globe className="w-3.5 h-3.5" />
+                  al-azab.co
+                </a>
+                <a href="tel:+201004006620" className="text-white/70 hover:text-primary transition-colors flex items-center gap-2 text-xs" dir="ltr">
+                  <Phone className="w-3.5 h-3.5" />
+                  +20 100 400 6620
+                </a>
               </div>
             </div>
           </div>
-        </motion.div>
+        </div>
 
-        <div className="border-t border-white/[0.08] pt-8 flex items-center justify-between">
-          <p className="text-sm text-white/25">
-            {t("footer.rights")} © {new Date().getFullYear()} Alazab
+        {/* Legal Links */}
+        <div className="border-t border-white/10 pt-8 mt-10">
+          <h3 className="text-sm font-bold mb-4 text-white/80 text-center">الصفحات القانونية</h3>
+          <div className="flex flex-wrap justify-center gap-x-6 gap-y-2 text-xs text-white/60">
+            {legal.map((link) => (
+              <Link key={link.to} to={link.to} className="hover:text-primary transition-colors">
+                {link.label}
+              </Link>
+            ))}
+          </div>
+        </div>
+
+        <hr className="border-white/10 my-6" />
+
+        {/* Copyright */}
+        <div className="text-center text-white/60 text-xs">
+          <p className="mb-2">جميع الحقوق محفوظة © {year} شركة العزب للمقاولات</p>
+          <p className="leading-relaxed max-w-2xl mx-auto opacity-70">
+            شركة العزب للإنشاءات تعمل تحت العلامة التجارية المسجلة D-U-N-S No: 849203826
           </p>
-          <button
-            onClick={scrollToTop}
-            className="w-11 h-11 rounded-xl bg-primary/10 hover:bg-primary/20 text-primary flex items-center justify-center transition-all duration-300 hover:-translate-y-1 border border-primary/10"
-          >
-            <ArrowUp className="w-4 h-4" />
-          </button>
         </div>
       </div>
     </footer>

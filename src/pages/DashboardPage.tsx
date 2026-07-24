@@ -6,7 +6,6 @@ import { Button } from "@/components/ui/button";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { supabase } from "@/integrations/supabase/client";
 import type { User as SupaUser } from "@supabase/supabase-js";
-import logoLight from "@/assets/az-w.png.asset.json";
 
 const DashboardPage = () => {
   const { t } = useLanguage();
@@ -49,7 +48,7 @@ const DashboardPage = () => {
       <header className="border-b border-white/10 px-6 py-4">
         <div className="container mx-auto flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <img src={logoLight.url} alt="Alazab" className="w-11 h-11 object-contain drop-shadow-md" />
+            <img src="/brands/android-chrome-192x192.png" alt="" className="w-11 h-11 rounded-xl object-contain drop-shadow-md" />
             <span className="font-heading text-lg font-bold">العزب</span>
           </div>
           <Button variant="ghost" onClick={handleLogout} className="text-white/70 hover:text-white hover:bg-white/10 gap-2">

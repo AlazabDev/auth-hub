@@ -5,17 +5,15 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Link } from "react-router-dom";
 import { useTheme } from "@/contexts/ThemeContext";
 import { useLanguage } from "@/contexts/LanguageContext";
-import logoDark from "@/assets/az-s.png.asset.json";
-import logoLight from "@/assets/az-w.png.asset.json";
 
 const Navbar = () => {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const { theme, toggleTheme } = useTheme();
-  const { t, toggleLang } = useLanguage();
+  const { t, toggleLang, lang } = useLanguage();
 
   const navLinks = [
-    { label: t("nav.home"), href: "#" },
+    { label: t("nav.home"), href: "#top" },
     { label: t("nav.services"), href: "#services" },
     { label: t("nav.platforms"), href: "#platforms" },
     { label: t("nav.features"), href: "#features" },
@@ -29,19 +27,19 @@ const Navbar = () => {
   }, []);
 
   return (
-    <nav className={`sticky top-0 z-50 border-b transition-all duration-500 ${
+    <nav aria-label={lang === "ar" ? "التنقل الرئيسي" : "Main navigation"} className={`sticky top-0 z-50 border-b transition-all duration-300 ${
       scrolled
         ? "border-border/60 glass-strong shadow-sm"
         : "border-transparent bg-transparent"
     }`}>
       <div className="container flex items-center justify-between h-[72px]">
         <Link to="/" className="flex items-center gap-3 group">
-          <div className="relative w-12 h-12 flex items-center justify-center transition-transform duration-300 group-hover:scale-105">
+          <div className="relative w-11 h-11 flex items-center justify-center transition-transform duration-300 group-hover:scale-105">
             <div className="absolute inset-0 rounded-2xl bg-primary/15 blur-lg opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
             <img
-              src={theme === "dark" ? logoLight.url : logoDark.url}
-              alt="Alazab"
-              className="relative w-12 h-12 object-contain drop-shadow-md"
+              src="/brands/android-chrome-192x192.png"
+              alt=""
+              className="relative w-10 h-10 rounded-xl object-contain shadow-sm"
             />
           </div>
           <div>
@@ -65,10 +63,10 @@ const Navbar = () => {
         </div>
 
         <div className="hidden md:flex items-center gap-2">
-          <Button variant="ghost" size="icon" className="text-muted-foreground hover:text-foreground rounded-xl" onClick={toggleTheme}>
+          <Button aria-label={theme === "light" ? "تفعيل الوضع الداكن" : "تفعيل الوضع الفاتح"} variant="ghost" size="icon" className="text-muted-foreground hover:text-foreground rounded-xl" onClick={toggleTheme}>
             {theme === "light" ? <Moon className="w-4 h-4" /> : <Sun className="w-4 h-4" />}
           </Button>
-          <Button variant="ghost" size="sm" className="gap-2 text-muted-foreground hover:text-foreground rounded-xl" onClick={toggleLang}>
+          <Button aria-label={lang === "ar" ? "Switch to English" : "التبديل إلى العربية"} variant="ghost" size="sm" className="gap-2 text-muted-foreground hover:text-foreground rounded-xl" onClick={toggleLang}>
             <Globe className="w-4 h-4" />
             {t("nav.lang")}
           </Button>
@@ -83,13 +81,13 @@ const Navbar = () => {
 
         {/* Mobile */}
         <div className="md:hidden flex items-center gap-1">
-          <Button variant="ghost" size="icon" className="text-muted-foreground rounded-xl" onClick={toggleTheme}>
+          <Button aria-label={theme === "light" ? "تفعيل الوضع الداكن" : "تفعيل الوضع الفاتح"} variant="ghost" size="icon" className="text-muted-foreground rounded-xl" onClick={toggleTheme}>
             {theme === "light" ? <Moon className="w-4 h-4" /> : <Sun className="w-4 h-4" />}
           </Button>
-          <Button variant="ghost" size="icon" className="text-muted-foreground rounded-xl" onClick={toggleLang}>
+          <Button aria-label={lang === "ar" ? "Switch to English" : "التبديل إلى العربية"} variant="ghost" size="icon" className="text-muted-foreground rounded-xl" onClick={toggleLang}>
             <Globe className="w-4 h-4" />
           </Button>
-          <button className="p-2.5 rounded-xl hover:bg-muted transition-colors" onClick={() => setMobileOpen(!mobileOpen)}>
+          <button aria-label={mobileOpen ? "إغلاق القائمة" : "فتح القائمة"} aria-expanded={mobileOpen} className="p-2.5 rounded-xl hover:bg-muted transition-colors" onClick={() => setMobileOpen(!mobileOpen)}>
             {mobileOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
           </button>
         </div>
@@ -106,7 +104,7 @@ const Navbar = () => {
           >
             <div className="container py-4 flex flex-col gap-1">
               {navLinks.map((link) => (
-                <a key={link.label} href={link.href} className="text-sm py-3 px-4 rounded-xl text-muted-foreground hover:text-foreground hover:bg-muted/60 transition-all">
+                <a onClick={() => setMobileOpen(false)} key={link.label} href={link.href} className="text-sm py-3 px-4 rounded-xl text-muted-foreground hover:text-foreground hover:bg-muted/60 transition-all">
                   {link.label}
                 </a>
               ))}

@@ -1,40 +1,224 @@
-### Auth Hub
+# Welcome to your Alazab Auth project
 
-Alazab Auth Hub
+# Alazab Auth Project
 
-### Installation
+Authentication system built with **React**, **Vite**, and **Supabase**.
 
-You can install this app using the [bench](https://github.com/frappe/bench) CLI:
+This project provides a modern authentication interface connected to Supabase for secure user management, session handling, and database operations.
 
-```bash
-cd $PATH_TO_YOUR_BENCH
-bench get-app $URL_OF_THIS_REPO --branch version-16
-bench install-app auth_hub
+---
+
+## 🚀 Tech Stack
+
+### Frontend
+
+* React
+* Vite
+* JavaScript
+* CSS / Tailwind (optional)
+
+### Backend (BaaS)
+
+* Supabase
+* Supabase Auth
+* Supabase Database
+* Supabase Storage (optional)
+
+---
+
+## 📂 Project Structure
+
+```id="s1"
+alazab-auth/
+│
+├── public/
+│
+├── src/
+│   ├── components/
+│   │   └── Login.jsx
+│   │   └── Register.jsx
+│   │
+│   ├── pages/
+│   │   └── Dashboard.jsx
+│   │
+│   ├── lib/
+│   │   └── supabaseClient.js
+│   │
+│   ├── App.jsx
+│   └── main.jsx
+│
+├── .env
+├── index.html
+├── package.json
+├── vite.config.js
+└── README.md
 ```
 
-### Contributing
+---
 
-This app uses `pre-commit` for code formatting and linting. Please [install pre-commit](https://pre-commit.com/#installation) and enable it for this repository:
+## ⚙️ Installation
 
-```bash
-cd apps/auth_hub
-pre-commit install
+Install dependencies:
+
+```bash id="s2"
+npm install
 ```
 
-Pre-commit is configured to use the following tools for checking and formatting your code:
+---
 
-- ruff
-- eslint
-- prettier
-- pyupgrade
-### CI
+## ▶️ Run Development Server
 
-This app can use GitHub Actions for CI. The following workflows are configured:
+```bash id="s3"
+npm run dev
+```
 
-- CI: Installs this app and runs unit tests on every push to `develop` branch.
-- Linters: Runs [Frappe Semgrep Rules](https://github.com/frappe/semgrep-rules) and [pip-audit](https://pypi.org/project/pip-audit/) on every pull request.
+Default URL:
+
+```id="s4"
+http://localhost:5173
+```
+
+---
+
+## 🔑 Environment Variables
+
+Create a `.env` file in the root directory:
+
+```env id="s5"
+VITE_SUPABASE_URL=https://your-project-id.supabase.co
+VITE_SUPABASE_ANON_KEY=your-anon-key
+```
+
+---
+
+## 🔌 Supabase Client Setup
+
+Create:
+
+```id="s6"
+src/lib/supabaseClient.js
+```
+
+```javascript id="s7"
+import { createClient } from '@supabase/supabase-js'
+
+const supabaseUrl = import.meta.env.VITE_SUPABASE_URL
+const supabaseKey = import.meta.env.VITE_SUPABASE_ANON_KEY
+
+export const supabase = createClient(
+  supabaseUrl,
+  supabaseKey
+)
+```
+
+---
+
+## 🔐 Features
+
+* User Registration
+* User Login
+* Logout
+* Session Management
+* Protected Routes
+* Real-time Database
+* Secure Authentication
+
+---
+
+## 📦 Available Scripts
+
+```bash id="s8"
+npm run dev      # Start development server
+npm run build    # Build for production
+npm run preview  # Preview production build
+```
+
+---
+
+## 🛡️ Security Notes
+
+* Never expose the **service_role key** in frontend code
+* Use `.env` for sensitive keys
+* Enable Row Level Security (RLS) in Supabase
+* Use HTTPS in production
+
+---
+
+## 🌍 Deployment
+
+You can deploy this project to:
+
+* Vercel
+* Netlify
+* VPS / Ubuntu Server
+* Docker
+
+---
+
+## 📌 Future Improvements
+
+* Role-based access control (RBAC)
+* Email verification
+* Password reset
+* Admin dashboard
+* Multi-tenant support
+
+---
+
+## 👨‍💻 Maintained By
+
+**Alazab Team**
+
+Authentication system for internal and commercial applications.
+
+---
+
+## Status
+
+```id="s9"
+Frontend: React + Vite
+Backend: Supabase
+Auth: Enabled
+Environment: Development
+Version: 1.0.0
+```
+
+## 📄 الترخيص
+
+هذا المشروع مخصص لشركة العزب للإنشاءات.
+
+## 🤝 الدعم
+
+للحصول على الدعم:
+- 📧 البريد الإلكتروني: support@uberfix.shop
+- 🌐 الموقع: https://uberfix.shop
+- 📚 التوثيق: راجع [PROJECT_STRUCTURE.md](./PROJECT_STRUCTURE.md)
+
+## 📝 ملاحظات مهمة
+
+1. **امتثال البيانات**: النظام يتوافق مع قانون حماية البيانات المصري رقم 151 لسنة 2020
+2. **الأمان**: لا تستخدم بيانات Demo في الإنتاج
+3. **الترحيلات**: ملفات `supabase/migrations/` للقراءة فقط - استخدم أدوات Supabase للتعديل
+4. **Edge Functions**: يتم نشرها تلقائياً عند التحديث
+
+## 🗺️ خارطة الطريق
+
+- [ ] تطبيق الهاتف المحمول الأصلي
+- [ ] نظام المحادثة المباشرة
+- [ ] التكامل مع بوابات الدفع
+- [ ] تقارير متقدمة وتحليلات
+- [ ] نظام نقاط الولاء
+
+<br>
+<br>
+<div align="center">
+	<a href="https://alazab.dev">
+		<picture>
+			<div style="text-align:center;">
+       <a href="https://alazab.dev" target="_blank">
+    <img src="https://al-azab.co/images/logaz.gif" alt="Alazab.Dev" height="62" style="display:inline-block;">
+		</picture>
+	</a>
+</div>
 
 
-### License
-
-mit
